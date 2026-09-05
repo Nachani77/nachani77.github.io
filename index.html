@@ -13,7 +13,7 @@ h1{font-size:clamp(22px,3vw,42px);line-height:.9;letter-spacing:-.04em;margin:0}
 h1 span{display:block;font-size:.42em;letter-spacing:.18em;margin-top:10px;font-weight:500}
 .meta{text-align:right;font-size:12px;line-height:1.6;color:#555}
 .archive{padding:3vw;columns:4 260px;column-gap:10px}
-.photo{display:block;width:100%;margin:0 0 10px;break-inside:avoid;cursor:zoom-in;background:#f3f3f3;position:relative;z-index:1;transition:z-index 0s;overflow:visible;content-visibility:auto;contain-intrinsic-size:320px 420px}
+.photo{display:block;width:100%;margin:0 0 10px;break-inside:avoid;cursor:zoom-in;background:#f3f3f3;position:relative;z-index:1;transition:z-index 0s;overflow:visible}
 .photo img{display:block;width:100%;height:auto;opacity:0;transition:opacity .32s ease,transform .22s ease,box-shadow .22s ease;transform-origin:center}
 .photo img.loaded{opacity:1}
 .photo:hover{z-index:10}
@@ -31,7 +31,7 @@ h1 span{display:block;font-size:.42em;letter-spacing:.18em;margin-top:10px;font-
 .lightbox-prev{left:12px}.lightbox-next{right:12px}
 .lightbox-count{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);color:rgba(255,255,255,.78);font-size:12px;letter-spacing:.12em;font-variant-numeric:tabular-nums}
 @media(max-width:650px){
-header{padding:22px 16px 18px}.archive{padding:16px;columns:2 140px;column-gap:6px}.photo{margin-bottom:6px;contain-intrinsic-size:160px 220px}.photo:hover img{transform:none;box-shadow:none}.about{margin:60px 16px 24px;grid-template-columns:1fr;gap:14px}.meta{font-size:10px}
+header{padding:22px 16px 18px}.archive{padding:16px;columns:2 140px;column-gap:6px}.photo{margin-bottom:6px}.photo:hover img{transform:none;box-shadow:none}.about{margin:60px 16px 24px;grid-template-columns:1fr;gap:14px}.meta{font-size:10px}
 .lightbox{padding:54px 10px 48px}.lightbox img{max-width:100%;max-height:84vh}.lightbox-prev,.lightbox-next{width:42px;height:60px;font-size:30px;background:rgba(0,0,0,.18)}.lightbox-prev{left:2px}.lightbox-next{right:2px}.lightbox-close{right:8px;top:8px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.photo img,.lightbox img,.lightbox-control{transition:none}}
@@ -60,7 +60,8 @@ let touchStartY=0;
 photos.forEach((src,index)=>{
   const item=document.createElement('div');item.className='photo';const img=document.createElement('img');img.src=src;img.alt='';img.decoding='async';
   if(index<6){img.loading='eager';img.fetchPriority=index<2?'high':'auto'}else{img.loading='lazy'}
-  img.addEventListener('load',()=>img.classList.add('loaded'),{once:true});if(img.complete)img.classList.add('loaded');item.appendChild(img);item.addEventListener('click',()=>openLightbox(index));archive.appendChild(item);
+  const reveal=()=>{if(!img.classList.contains('loaded'))img.classList.add('loaded')};
+  img.addEventListener('load',reveal,{once:true});if(img.complete)reveal();item.appendChild(img);item.addEventListener('click',()=>openLightbox(index));archive.appendChild(item);
 });
 function renderLightbox(){lightboxImage.classList.remove('ready');lightboxImage.src=photos[currentIndex];lightboxCount.textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(photos.length).padStart(2,'0')}`}
 function openLightbox(index){currentIndex=index;renderLightbox();lightbox.classList.add('open');document.body.style.overflow='hidden'}
