@@ -48,7 +48,7 @@ header{padding:22px 16px 18px}.archive{padding:16px;columns:2 140px;column-gap:6
   <div id="lightboxCount" class="lightbox-count" aria-live="polite"></div>
 </div>
 <script>
-const ids=['1ElOTxJ2TsxGpmkQ_VWVh1AHbZCYu-BQ0','1U8OYc7A_4P9UaOgm4n_ST_dZlqCh8gM2','1p0xF_4V5zI04mWh1q2E5vkxVa1pnuQGV','1TCTDFjsyZT7yCitt8mXalN428aE6e-a4','1YeDcr-VlMTXI8TZ99Vyu7fTV3vSvF3hI','1PlIa4K2gMGGoYEQaQsYAYKuxt127m5I8','1draZ_9IEXOTZdzm1duf2B7xU2pWdx8pd','1q6Gn5CcsYzAGTWBNtsl9xooQkXLvPtcB','1JHMuOLB6Hte10z1nEjEP3wPE-xiySIgr','16A5q1A5_dABKu-zhzAMAb6ceSFPQ0pKO','14gNAKKW0h24umyyVcq_E853iGYTeKUIK','1BKceqojW0iOcPs6dxOH4gSfplYrFoXdD','12GzHnhnvSFHDpjkiWvBGygkFBy0MP_9S','1hN49TRss0gvrVgeUkl4u6ZioJz19Tb0N','1bGcUevCOsfp1PBT0UdCoSQWOD39JH-kd','1RDe1ys3uzCxhlBankIRB3nQoX6_RF_Er','1V7OTLW5DMxgG4fD0t2AZdqFh-7PldHxM','12wGLoMaJUP4my1Pbzf82xTQY_RgAVwyu','1R_kBkDD0Y_IaK05arzL2nUR9BTnEen-Z','1oMb2afMVuKRTbqJlxBYihIunU_uR_c4N','1aUMy9fWLr7ZbCNRL1MvQ9I-Mc8Cdl8P7','1595mRrmX_fm1Ci0EXYycMKMbf0brBa7m','1fy2wLqZraospZoqmyxBxHLn3VDUotgBi','17YHgnY4kI3dXmr42tLU8ypnmmYZ1Pi4V','1V2_PZJ0sxoZ9Lop_aYYCAFBKA19Z5Lwg','1psB3WA58ZrNa5CxK12PXKBj1hsfgeFnj','1FaN2TiU9ipi0RjT9LTyXn74XtLoaqIPY'];
+const ids=['1ElOTxJ2TsxGpmkQ_VWVh1AHbZCYu-BQ0','1hN49TRss0gvrVgeUkl4u6ZioJz19Tb0N','1YeDcr-VlMTXI8TZ99Vyu7fTV3vSvF3hI','1R_kBkDD0Y_IaK05arzL2nUR9BTnEen-Z','1p0xF_4V5zI04mWh1q2E5vkxVa1pnuQGV','17YHgnY4kI3dXmr42tLU8ypnmmYZ1Pi4V','1q6Gn5CcsYzAGTWBNtsl9xooQkXLvPtcB','1RDe1ys3uzCxhlBankIRB3nQoX6_RF_Er','1PlIa4K2gMGGoYEQaQsYAYKuxt127m5I8','1aUMy9fWLr7ZbCNRL1MvQ9I-Mc8Cdl8P7','14gNAKKW0h24umyyVcq_E853iGYTeKUIK','1psB3WA58ZrNa5CxK12PXKBj1hsfgeFnj','1TCTDFjsyZT7yCitt8mXalN428aE6e-a4','1V7OTLW5DMxgG4fD0t2AZdqFh-7PldHxM','1JHMuOLB6Hte10z1nEjEP3wPE-xiySIgr','1595mRrmX_fm1Ci0EXYycMKMbf0brBa7m','12GzHnhnvSFHDpjkiWvBGygkFBy0MP_9S','1FaN2TiU9ipi0RjT9LTyXn74XtLoaqIPY','1draZ_9IEXOTZdzm1duf2B7xU2pWdx8pd','1oMb2afMVuKRTbqJlxBYihIunU_uR_c4N','1BKceqojW0iOcPs6dxOH4gSfplYrFoXdD','1V2_PZJ0sxoZ9Lop_aYYCAFBKA19Z5Lwg','16A5q1A5_dABKu-zhzAMAb6ceSFPQ0pKO','1fy2wLqZraospZoqmyxBxHLn3VDUotgBi','1bGcUevCOsfp1PBT0UdCoSQWOD39JH-kd','12wGLoMaJUP4my1Pbzf82xTQY_RgAVwyu','1U8OYc7A_4P9UaOgm4n_ST_dZlqCh8gM2'];
 const photos=ids.map(id=>`https://drive.google.com/thumbnail?id=${id}&sz=w1800`);
 const archive=document.getElementById('archive');
 const lightbox=document.getElementById('lightbox');
@@ -57,52 +57,16 @@ const lightboxCount=document.getElementById('lightboxCount');
 let currentIndex=0;
 let touchStartX=0;
 let touchStartY=0;
-
 photos.forEach((src,index)=>{
-  const item=document.createElement('div');
-  item.className='photo';
-  const img=document.createElement('img');
-  img.src=src;
-  img.alt='';
-  img.decoding='async';
+  const item=document.createElement('div');item.className='photo';const img=document.createElement('img');img.src=src;img.alt='';img.decoding='async';
   if(index<6){img.loading='eager';img.fetchPriority=index<2?'high':'auto'}else{img.loading='lazy'}
-  img.addEventListener('load',()=>img.classList.add('loaded'),{once:true});
-  if(img.complete)img.classList.add('loaded');
-  item.appendChild(img);
-  item.addEventListener('click',()=>openLightbox(index));
-  archive.appendChild(item);
+  img.addEventListener('load',()=>img.classList.add('loaded'),{once:true});if(img.complete)img.classList.add('loaded');item.appendChild(img);item.addEventListener('click',()=>openLightbox(index));archive.appendChild(item);
 });
-
-function renderLightbox(){
-  lightboxImage.classList.remove('ready');
-  lightboxImage.src=photos[currentIndex];
-  lightboxCount.textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(photos.length).padStart(2,'0')}`;
-}
-function openLightbox(index){
-  currentIndex=index;
-  renderLightbox();
-  lightbox.classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeLightbox(){
-  lightbox.classList.remove('open');
-  document.body.style.overflow='';
-}
-function moveLightbox(step){
-  currentIndex=(currentIndex+step+photos.length)%photos.length;
-  renderLightbox();
-}
-lightboxImage.addEventListener('load',()=>lightboxImage.classList.add('ready'));
-document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
-document.getElementById('lightboxPrev').addEventListener('click',()=>moveLightbox(-1));
-document.getElementById('lightboxNext').addEventListener('click',()=>moveLightbox(1));
-lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox()});
-document.addEventListener('keydown',e=>{
-  if(!lightbox.classList.contains('open'))return;
-  if(e.key==='Escape')closeLightbox();
-  if(e.key==='ArrowLeft')moveLightbox(-1);
-  if(e.key==='ArrowRight')moveLightbox(1);
-});
-lightbox.addEventListener('touchstart',e=>{const t=e.changedTouches[0];touchStartX=t.clientX;touchStartY=t.clientY},{passive:true});
-lightbox.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-touchStartX,dy=t.clientY-touchStartY;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.2)moveLightbox(dx<0?1:-1)},{passive:true});
+function renderLightbox(){lightboxImage.classList.remove('ready');lightboxImage.src=photos[currentIndex];lightboxCount.textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(photos.length).padStart(2,'0')}`}
+function openLightbox(index){currentIndex=index;renderLightbox();lightbox.classList.add('open');document.body.style.overflow='hidden'}
+function closeLightbox(){lightbox.classList.remove('open');document.body.style.overflow=''}
+function moveLightbox(step){currentIndex=(currentIndex+step+photos.length)%photos.length;renderLightbox()}
+lightboxImage.addEventListener('load',()=>lightboxImage.classList.add('ready'));document.getElementById('lightboxClose').addEventListener('click',closeLightbox);document.getElementById('lightboxPrev').addEventListener('click',()=>moveLightbox(-1));document.getElementById('lightboxNext').addEventListener('click',()=>moveLightbox(1));lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox()});
+document.addEventListener('keydown',e=>{if(!lightbox.classList.contains('open'))return;if(e.key==='Escape')closeLightbox();if(e.key==='ArrowLeft')moveLightbox(-1);if(e.key==='ArrowRight')moveLightbox(1)});
+lightbox.addEventListener('touchstart',e=>{const t=e.changedTouches[0];touchStartX=t.clientX;touchStartY=t.clientY},{passive:true});lightbox.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-touchStartX,dy=t.clientY-touchStartY;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.2)moveLightbox(dx<0?1:-1)},{passive:true});
 </script></body></html>
