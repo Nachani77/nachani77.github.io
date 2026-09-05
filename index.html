@@ -20,10 +20,14 @@ h1 span{display:block;font-size:.42em;letter-spacing:.18em;margin-top:10px;font-
 .photo:hover img{transform:scale(1.2);box-shadow:0 12px 36px rgba(0,0,0,.22)}
 .about{margin:8vw 3vw 3vw;padding-top:28px;border-top:1px solid #ddd;display:grid;grid-template-columns:1fr 2fr;gap:30px;font-size:14px;line-height:1.8}
 .about h2{margin:0;font-size:13px;letter-spacing:.15em}.about p{margin:0;max-width:650px}.contact{margin-top:22px}
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;z-index:20;padding:56px 72px 54px;cursor:default;touch-action:pan-y;user-select:none}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;z-index:20;padding:56px 72px 54px;cursor:default;touch-action:pan-y;user-select:none;overflow:hidden}
 .lightbox.open{display:flex}
-.lightbox img{max-width:96vw;max-height:88vh;object-fit:contain;opacity:0;transition:opacity .18s ease}
-.lightbox img.ready{opacity:1}
+.lightbox img{max-width:96vw;max-height:88vh;object-fit:contain;opacity:0;transform:translateX(0);transition:opacity .2s ease,transform .24s cubic-bezier(.22,.61,.36,1);will-change:transform,opacity}
+.lightbox img.ready{opacity:1;transform:translateX(0)}
+.lightbox img.slide-out-left{opacity:0;transform:translateX(-7vw)}
+.lightbox img.slide-out-right{opacity:0;transform:translateX(7vw)}
+.lightbox img.slide-in-right{opacity:0;transform:translateX(7vw);transition:none}
+.lightbox img.slide-in-left{opacity:0;transform:translateX(-7vw);transition:none}
 .lightbox-control{position:absolute;border:0;background:rgba(0,0,0,.24);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;transition:background .18s ease,opacity .18s ease}
 .lightbox-control:hover{background:rgba(255,255,255,.14)}
 .lightbox-close{right:18px;top:16px;width:44px;height:44px;border-radius:50%;font-size:30px;line-height:1}
@@ -33,6 +37,7 @@ h1 span{display:block;font-size:.42em;letter-spacing:.18em;margin-top:10px;font-
 @media(max-width:650px){
 header{padding:22px 16px 18px}.archive{padding:16px;columns:2 140px;column-gap:6px}.photo{margin-bottom:6px}.photo:hover img{transform:none;box-shadow:none}.about{margin:60px 16px 24px;grid-template-columns:1fr;gap:14px}.meta{font-size:10px}
 .lightbox{padding:54px 10px 48px}.lightbox img{max-width:100%;max-height:84vh}.lightbox-prev,.lightbox-next{width:42px;height:60px;font-size:30px;background:rgba(0,0,0,.18)}.lightbox-prev{left:2px}.lightbox-next{right:2px}.lightbox-close{right:8px;top:8px}
+.lightbox img.slide-out-left{transform:translateX(-18vw)}.lightbox img.slide-out-right{transform:translateX(18vw)}.lightbox img.slide-in-right{transform:translateX(18vw)}.lightbox img.slide-in-left{transform:translateX(-18vw)}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.photo img,.lightbox img,.lightbox-control{transition:none}}
 </style>
@@ -85,6 +90,7 @@ const lightboxCount=document.getElementById('lightboxCount');
 let currentIndex=0;
 let touchStartX=0;
 let touchStartY=0;
+let lightboxAnimating=false;
 photoData.forEach((photo,index)=>{
   const item=document.createElement('div');item.className='photo';
   const img=document.createElement('img');
@@ -96,11 +102,40 @@ photoData.forEach((photo,index)=>{
   if(img.complete)reveal();
   item.appendChild(img);item.addEventListener('click',()=>openLightbox(index));archive.appendChild(item);
 });
-function renderLightbox(){lightboxImage.classList.remove('ready');lightboxImage.src=photos[currentIndex];lightboxCount.textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(photos.length).padStart(2,'0')}`}
+function updateLightboxCount(){lightboxCount.textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(photos.length).padStart(2,'0')}`}
+function renderLightbox(){
+  lightboxImage.className='';
+  lightboxImage.src=photos[currentIndex];
+  updateLightboxCount();
+  if(lightboxImage.complete)lightboxImage.classList.add('ready');
+}
 function openLightbox(index){currentIndex=index;renderLightbox();lightbox.classList.add('open');document.body.style.overflow='hidden'}
-function closeLightbox(){lightbox.classList.remove('open');document.body.style.overflow=''}
-function moveLightbox(step){currentIndex=(currentIndex+step+photos.length)%photos.length;renderLightbox()}
-lightboxImage.addEventListener('load',()=>lightboxImage.classList.add('ready'));document.getElementById('lightboxClose').addEventListener('click',closeLightbox);document.getElementById('lightboxPrev').addEventListener('click',()=>moveLightbox(-1));document.getElementById('lightboxNext').addEventListener('click',()=>moveLightbox(1));lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox()});
+function closeLightbox(){if(lightboxAnimating)return;lightbox.classList.remove('open');document.body.style.overflow=''}
+function moveLightbox(step){
+  if(lightboxAnimating)return;
+  lightboxAnimating=true;
+  const forward=step>0;
+  lightboxImage.className=forward?'ready slide-out-left':'ready slide-out-right';
+  window.setTimeout(()=>{
+    currentIndex=(currentIndex+step+photos.length)%photos.length;
+    updateLightboxCount();
+    lightboxImage.className=forward?'slide-in-right':'slide-in-left';
+    lightboxImage.src=photos[currentIndex];
+    const enter=()=>{
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        lightboxImage.className='ready';
+        window.setTimeout(()=>{lightboxAnimating=false},250);
+      }));
+    };
+    if(lightboxImage.complete)enter();else lightboxImage.addEventListener('load',enter,{once:true});
+  },180);
+}
+lightboxImage.addEventListener('load',()=>{if(!lightboxAnimating)lightboxImage.classList.add('ready')});
+document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
+document.getElementById('lightboxPrev').addEventListener('click',()=>moveLightbox(-1));
+document.getElementById('lightboxNext').addEventListener('click',()=>moveLightbox(1));
+lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox()});
 document.addEventListener('keydown',e=>{if(!lightbox.classList.contains('open'))return;if(e.key==='Escape')closeLightbox();if(e.key==='ArrowLeft')moveLightbox(-1);if(e.key==='ArrowRight')moveLightbox(1)});
-lightbox.addEventListener('touchstart',e=>{const t=e.changedTouches[0];touchStartX=t.clientX;touchStartY=t.clientY},{passive:true});lightbox.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-touchStartX,dy=t.clientY-touchStartY;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.2)moveLightbox(dx<0?1:-1)},{passive:true});
+lightbox.addEventListener('touchstart',e=>{const t=e.changedTouches[0];touchStartX=t.clientX;touchStartY=t.clientY},{passive:true});
+lightbox.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-touchStartX,dy=t.clientY-touchStartY;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.2)moveLightbox(dx<0?1:-1)},{passive:true});
 </script></body></html>
