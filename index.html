@@ -18,7 +18,7 @@ h1 span{display:block;font-size:.42em;letter-spacing:.18em;margin-top:10px;font-
 .photo img.loaded{opacity:1}.photo img.load-error{opacity:0}
 .photo:hover{z-index:10}.photo:hover img{transform:scale(1.2);box-shadow:0 12px 36px rgba(0,0,0,.22)}
 .about{margin:8vw 3vw 3vw;padding-top:28px;border-top:1px solid #ddd;display:grid;grid-template-columns:1fr 2fr;gap:30px;font-size:14px;line-height:1.8}
-.about h2{margin:0;font-size:13px;letter-spacing:.15em}.about p{margin:0;max-width:650px}.contact{margin-top:22px}
+.about h2{margin:0;font-size:13px;letter-spacing:.15em}.about p{margin:0;max-width:650px}
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;z-index:20;padding:56px 72px 54px;cursor:default;touch-action:pan-y;user-select:none;overflow:hidden}
 .lightbox.open{display:flex}
 .lightbox img{max-width:96vw;max-height:88vh;object-fit:contain;opacity:0;transform:translateX(0);transition:opacity .2s ease,transform .24s cubic-bezier(.22,.61,.36,1);will-change:transform,opacity}
@@ -36,7 +36,7 @@ h1 span{display:block;font-size:.42em;letter-spacing:.18em;margin-top:10px;font-
 </style></head><body>
 <header><h1>NACHAN<span>PHOTO ARCHIVE</span></h1><div class="meta">CHARACTER &amp; PORTRAIT PHOTOGRAPHY<br><a href="https://x.com/nachani77" target="_blank" rel="noopener noreferrer">X: @nachani77</a></div></header>
 <main id="archive" class="archive"></main>
-<section class="about"><h2>ABOUT</h2><div><p><strong>NACHAN</strong><br>Character &amp; Portrait Photography<br><a href="https://x.com/nachani77" target="_blank" rel="noopener noreferrer">X: @nachani77</a></p><p class="contact">Instagram · Email</p></div></section>
+<section class="about"><h2>ABOUT</h2><div><p><strong>NACHAN</strong><br>Character &amp; Portrait Photography<br><a href="https://x.com/nachani77" target="_blank" rel="noopener noreferrer">X: @nachani77</a></p></div></section>
 <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer"><button id="lightboxClose" class="lightbox-control lightbox-close" type="button" aria-label="Close">×</button><button id="lightboxPrev" class="lightbox-control lightbox-prev" type="button" aria-label="Previous photo">‹</button><img id="lightboxImage" alt=""><button id="lightboxNext" class="lightbox-control lightbox-next" type="button" aria-label="Next photo">›</button><div id="lightboxCount" class="lightbox-count" aria-live="polite"></div></div>
 <script>
 const photoData=[
