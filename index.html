@@ -15,7 +15,12 @@
 <section class="about"><h2>ABOUT</h2><div><p><strong>NACHAN</strong><br>Character &amp; Portrait Photography<br>Seoul, Korea<br><br>빛, 색, 공간과 캐릭터의 분위기를 중심으로 순간을 기록합니다.</p><p class="contact">Instagram · Email</p></div></section>
 <div id="lightbox" class="lightbox"><img id="lightboxImage" alt=""></div>
 <script>
-const photos=[];
+const photos=[
+'https://drive.google.com/thumbnail?id=1ElOTxJ2TsxGpmkQ_VWVh1AHbZCYu-BQ0&sz=w1800',
+'https://drive.google.com/thumbnail?id=1U8OYc7A_4P9UaOgm4n_ST_dZlqCh8gM2&sz=w1800',
+'https://drive.google.com/thumbnail?id=1p0xF_4V5zI04mWh1q2E5vkxVa1pnuQGV&sz=w1800',
+'https://drive.google.com/thumbnail?id=1TCTDFjsyZT7yCitt8mXalN428aE6e-a4&sz=w1800'
+];
 const archive=document.getElementById('archive');
 if(photos.length){archive.innerHTML='';photos.forEach(src=>{const a=document.createElement('div');a.className='photo';const img=document.createElement('img');img.src=src;img.loading='lazy';img.alt='';a.appendChild(img);a.onclick=()=>{document.getElementById('lightboxImage').src=src;document.getElementById('lightbox').classList.add('open')};archive.appendChild(a)})}
 document.getElementById('lightbox').onclick=e=>e.currentTarget.classList.remove('open');document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('lightbox').classList.remove('open')});
