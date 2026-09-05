@@ -3,13 +3,106 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NACHAN — PHOTO ARCHIVE</title><meta name="description" content="NACHAN — Character & Portrait Photography — X: @nachani77">
-<style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fff;color:#111;font-family:Arial,"Noto Sans KR",sans-serif}header{display:flex;justify-content:space-between;align-items:flex-end;padding:32px 3vw 24px;border-bottom:1px solid #e8e8e8}h1{font-size:clamp(22px,3vw,42px);line-height:.9;letter-spacing:-.04em;margin:0}h1 span{display:block;font-size:.42em;letter-spacing:.18em;margin-top:10px;font-weight:500}.meta{text-align:right;font-size:12px;line-height:1.6;color:#555}.archive{padding:3vw;columns:4 260px;column-gap:10px}.photo{display:block;width:100%;margin:0 0 10px;break-inside:avoid;cursor:zoom-in;background:#f3f3f3;position:relative;z-index:1;transition:z-index 0s}.photo img{display:block;width:100%;height:auto;transition:transform .22s ease,box-shadow .22s ease;transform-origin:center}.photo:hover{z-index:10}.photo:hover img{transform:scale(1.2);box-shadow:0 12px 36px rgba(0,0,0,.22)}.about{margin:8vw 3vw 3vw;padding-top:28px;border-top:1px solid #ddd;display:grid;grid-template-columns:1fr 2fr;gap:30px;font-size:14px;line-height:1.8}.about h2{margin:0;font-size:13px;letter-spacing:.15em}.about p{margin:0;max-width:650px}.contact{margin-top:22px}.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;z-index:20;padding:24px;cursor:zoom-out}.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:94vh;object-fit:contain}@media(max-width:650px){header{padding:22px 16px 18px}.archive{padding:16px;columns:2 140px;column-gap:6px}.photo{margin-bottom:6px}.photo:hover img{transform:none;box-shadow:none}.about{margin:60px 16px 24px;grid-template-columns:1fr;gap:14px}.meta{font-size:10px}}</style>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:#111;font-family:Arial,"Noto Sans KR",sans-serif}
+a{color:inherit;text-decoration:none}a:hover{text-decoration:underline;text-underline-offset:3px}
+header{display:flex;justify-content:space-between;align-items:flex-end;padding:32px 3vw 24px;border-bottom:1px solid #e8e8e8}
+h1{font-size:clamp(22px,3vw,42px);line-height:.9;letter-spacing:-.04em;margin:0}
+h1 span{display:block;font-size:.42em;letter-spacing:.18em;margin-top:10px;font-weight:500}
+.meta{text-align:right;font-size:12px;line-height:1.6;color:#555}
+.archive{padding:3vw;columns:4 260px;column-gap:10px}
+.photo{display:block;width:100%;margin:0 0 10px;break-inside:avoid;cursor:zoom-in;background:#f3f3f3;position:relative;z-index:1;transition:z-index 0s;overflow:visible;content-visibility:auto;contain-intrinsic-size:320px 420px}
+.photo img{display:block;width:100%;height:auto;opacity:0;transition:opacity .32s ease,transform .22s ease,box-shadow .22s ease;transform-origin:center}
+.photo img.loaded{opacity:1}
+.photo:hover{z-index:10}
+.photo:hover img{transform:scale(1.2);box-shadow:0 12px 36px rgba(0,0,0,.22)}
+.about{margin:8vw 3vw 3vw;padding-top:28px;border-top:1px solid #ddd;display:grid;grid-template-columns:1fr 2fr;gap:30px;font-size:14px;line-height:1.8}
+.about h2{margin:0;font-size:13px;letter-spacing:.15em}.about p{margin:0;max-width:650px}.contact{margin-top:22px}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;z-index:20;padding:56px 72px 54px;cursor:default;touch-action:pan-y;user-select:none}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:88vh;object-fit:contain;opacity:0;transition:opacity .18s ease}
+.lightbox img.ready{opacity:1}
+.lightbox-control{position:absolute;border:0;background:rgba(0,0,0,.24);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;transition:background .18s ease,opacity .18s ease}
+.lightbox-control:hover{background:rgba(255,255,255,.14)}
+.lightbox-close{right:18px;top:16px;width:44px;height:44px;border-radius:50%;font-size:30px;line-height:1}
+.lightbox-prev,.lightbox-next{top:50%;transform:translateY(-50%);width:52px;height:72px;border-radius:10px;font-size:36px}
+.lightbox-prev{left:12px}.lightbox-next{right:12px}
+.lightbox-count{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);color:rgba(255,255,255,.78);font-size:12px;letter-spacing:.12em;font-variant-numeric:tabular-nums}
+@media(max-width:650px){
+header{padding:22px 16px 18px}.archive{padding:16px;columns:2 140px;column-gap:6px}.photo{margin-bottom:6px;contain-intrinsic-size:160px 220px}.photo:hover img{transform:none;box-shadow:none}.about{margin:60px 16px 24px;grid-template-columns:1fr;gap:14px}.meta{font-size:10px}
+.lightbox{padding:54px 10px 48px}.lightbox img{max-width:100%;max-height:84vh}.lightbox-prev,.lightbox-next{width:42px;height:60px;font-size:30px;background:rgba(0,0,0,.18)}.lightbox-prev{left:2px}.lightbox-next{right:2px}.lightbox-close{right:8px;top:8px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.photo img,.lightbox img,.lightbox-control{transition:none}}
+</style>
 </head><body>
-<header><h1>NACHAN<span>PHOTO ARCHIVE</span></h1><div class="meta">CHARACTER &amp; PORTRAIT PHOTOGRAPHY<br>X: @nachani77</div></header>
+<header><h1>NACHAN<span>PHOTO ARCHIVE</span></h1><div class="meta">CHARACTER &amp; PORTRAIT PHOTOGRAPHY<br><a href="https://x.com/nachani77" target="_blank" rel="noopener noreferrer">X: @nachani77</a></div></header>
 <main id="archive" class="archive"></main>
-<section class="about"><h2>ABOUT</h2><div><p><strong>NACHAN</strong><br>Character &amp; Portrait Photography<br>X: @nachani77</p><p class="contact">Instagram · Email</p></div></section>
-<div id="lightbox" class="lightbox"><img id="lightboxImage" alt=""></div>
+<section class="about"><h2>ABOUT</h2><div><p><strong>NACHAN</strong><br>Character &amp; Portrait Photography<br><a href="https://x.com/nachani77" target="_blank" rel="noopener noreferrer">X: @nachani77</a></p><p class="contact">Instagram · Email</p></div></section>
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button id="lightboxClose" class="lightbox-control lightbox-close" type="button" aria-label="Close">×</button>
+  <button id="lightboxPrev" class="lightbox-control lightbox-prev" type="button" aria-label="Previous photo">‹</button>
+  <img id="lightboxImage" alt="">
+  <button id="lightboxNext" class="lightbox-control lightbox-next" type="button" aria-label="Next photo">›</button>
+  <div id="lightboxCount" class="lightbox-count" aria-live="polite"></div>
+</div>
 <script>
 const ids=['1ElOTxJ2TsxGpmkQ_VWVh1AHbZCYu-BQ0','1U8OYc7A_4P9UaOgm4n_ST_dZlqCh8gM2','1p0xF_4V5zI04mWh1q2E5vkxVa1pnuQGV','1TCTDFjsyZT7yCitt8mXalN428aE6e-a4','1YeDcr-VlMTXI8TZ99Vyu7fTV3vSvF3hI','1PlIa4K2gMGGoYEQaQsYAYKuxt127m5I8','1draZ_9IEXOTZdzm1duf2B7xU2pWdx8pd','1q6Gn5CcsYzAGTWBNtsl9xooQkXLvPtcB','1JHMuOLB6Hte10z1nEjEP3wPE-xiySIgr','16A5q1A5_dABKu-zhzAMAb6ceSFPQ0pKO','14gNAKKW0h24umyyVcq_E853iGYTeKUIK','1BKceqojW0iOcPs6dxOH4gSfplYrFoXdD','12GzHnhnvSFHDpjkiWvBGygkFBy0MP_9S','1hN49TRss0gvrVgeUkl4u6ZioJz19Tb0N','1bGcUevCOsfp1PBT0UdCoSQWOD39JH-kd','1RDe1ys3uzCxhlBankIRB3nQoX6_RF_Er','1V7OTLW5DMxgG4fD0t2AZdqFh-7PldHxM','12wGLoMaJUP4my1Pbzf82xTQY_RgAVwyu','1R_kBkDD0Y_IaK05arzL2nUR9BTnEen-Z','1oMb2afMVuKRTbqJlxBYihIunU_uR_c4N','1aUMy9fWLr7ZbCNRL1MvQ9I-Mc8Cdl8P7','1595mRrmX_fm1Ci0EXYycMKMbf0brBa7m','1fy2wLqZraospZoqmyxBxHLn3VDUotgBi','17YHgnY4kI3dXmr42tLU8ypnmmYZ1Pi4V','1V2_PZJ0sxoZ9Lop_aYYCAFBKA19Z5Lwg','1psB3WA58ZrNa5CxK12PXKBj1hsfgeFnj','1FaN2TiU9ipi0RjT9LTyXn74XtLoaqIPY'];
-const photos=ids.map(id=>`https://drive.google.com/thumbnail?id=${id}&sz=w1800`),archive=document.getElementById('archive');photos.forEach(src=>{const a=document.createElement('div');a.className='photo';const img=document.createElement('img');img.src=src;img.loading='lazy';img.alt='';a.appendChild(img);a.onclick=()=>{document.getElementById('lightboxImage').src=src;document.getElementById('lightbox').classList.add('open')};archive.appendChild(a)});document.getElementById('lightbox').onclick=e=>e.currentTarget.classList.remove('open');document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('lightbox').classList.remove('open')});
+const photos=ids.map(id=>`https://drive.google.com/thumbnail?id=${id}&sz=w1800`);
+const archive=document.getElementById('archive');
+const lightbox=document.getElementById('lightbox');
+const lightboxImage=document.getElementById('lightboxImage');
+const lightboxCount=document.getElementById('lightboxCount');
+let currentIndex=0;
+let touchStartX=0;
+let touchStartY=0;
+
+photos.forEach((src,index)=>{
+  const item=document.createElement('div');
+  item.className='photo';
+  const img=document.createElement('img');
+  img.src=src;
+  img.alt='';
+  img.decoding='async';
+  if(index<6){img.loading='eager';img.fetchPriority=index<2?'high':'auto'}else{img.loading='lazy'}
+  img.addEventListener('load',()=>img.classList.add('loaded'),{once:true});
+  if(img.complete)img.classList.add('loaded');
+  item.appendChild(img);
+  item.addEventListener('click',()=>openLightbox(index));
+  archive.appendChild(item);
+});
+
+function renderLightbox(){
+  lightboxImage.classList.remove('ready');
+  lightboxImage.src=photos[currentIndex];
+  lightboxCount.textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(photos.length).padStart(2,'0')}`;
+}
+function openLightbox(index){
+  currentIndex=index;
+  renderLightbox();
+  lightbox.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  lightbox.classList.remove('open');
+  document.body.style.overflow='';
+}
+function moveLightbox(step){
+  currentIndex=(currentIndex+step+photos.length)%photos.length;
+  renderLightbox();
+}
+lightboxImage.addEventListener('load',()=>lightboxImage.classList.add('ready'));
+document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
+document.getElementById('lightboxPrev').addEventListener('click',()=>moveLightbox(-1));
+document.getElementById('lightboxNext').addEventListener('click',()=>moveLightbox(1));
+lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox()});
+document.addEventListener('keydown',e=>{
+  if(!lightbox.classList.contains('open'))return;
+  if(e.key==='Escape')closeLightbox();
+  if(e.key==='ArrowLeft')moveLightbox(-1);
+  if(e.key==='ArrowRight')moveLightbox(1);
+});
+lightbox.addEventListener('touchstart',e=>{const t=e.changedTouches[0];touchStartX=t.clientX;touchStartY=t.clientY},{passive:true});
+lightbox.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-touchStartX,dy=t.clientY-touchStartY;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.2)moveLightbox(dx<0?1:-1)},{passive:true});
 </script></body></html>
