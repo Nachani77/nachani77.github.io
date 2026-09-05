@@ -48,8 +48,36 @@ header{padding:22px 16px 18px}.archive{padding:16px;columns:2 140px;column-gap:6
   <div id="lightboxCount" class="lightbox-count" aria-live="polite"></div>
 </div>
 <script>
-const ids=['1ElOTxJ2TsxGpmkQ_VWVh1AHbZCYu-BQ0','1hN49TRss0gvrVgeUkl4u6ZioJz19Tb0N','1YeDcr-VlMTXI8TZ99Vyu7fTV3vSvF3hI','1R_kBkDD0Y_IaK05arzL2nUR9BTnEen-Z','1p0xF_4V5zI04mWh1q2E5vkxVa1pnuQGV','17YHgnY4kI3dXmr42tLU8ypnmmYZ1Pi4V','1q6Gn5CcsYzAGTWBNtsl9xooQkXLvPtcB','1RDe1ys3uzCxhlBankIRB3nQoX6_RF_Er','1PlIa4K2gMGGoYEQaQsYAYKuxt127m5I8','1aUMy9fWLr7ZbCNRL1MvQ9I-Mc8Cdl8P7','14gNAKKW0h24umyyVcq_E853iGYTeKUIK','1psB3WA58ZrNa5CxK12PXKBj1hsfgeFnj','1TCTDFjsyZT7yCitt8mXalN428aE6e-a4','1V7OTLW5DMxgG4fD0t2AZdqFh-7PldHxM','1JHMuOLB6Hte10z1nEjEP3wPE-xiySIgr','1595mRrmX_fm1Ci0EXYycMKMbf0brBa7m','12GzHnhnvSFHDpjkiWvBGygkFBy0MP_9S','1FaN2TiU9ipi0RjT9LTyXn74XtLoaqIPY','1draZ_9IEXOTZdzm1duf2B7xU2pWdx8pd','1oMb2afMVuKRTbqJlxBYihIunU_uR_c4N','1BKceqojW0iOcPs6dxOH4gSfplYrFoXdD','1V2_PZJ0sxoZ9Lop_aYYCAFBKA19Z5Lwg','16A5q1A5_dABKu-zhzAMAb6ceSFPQ0pKO','1fy2wLqZraospZoqmyxBxHLn3VDUotgBi','1bGcUevCOsfp1PBT0UdCoSQWOD39JH-kd','12wGLoMaJUP4my1Pbzf82xTQY_RgAVwyu','1U8OYc7A_4P9UaOgm4n_ST_dZlqCh8gM2'];
-const photos=ids.map(id=>`https://drive.google.com/thumbnail?id=${id}&sz=w1800`);
+const photoData=[
+{id:'1ElOTxJ2TsxGpmkQ_VWVh1AHbZCYu-BQ0',w:3051,h:3051},
+{id:'1hN49TRss0gvrVgeUkl4u6ZioJz19Tb0N',w:1536,h:1024},
+{id:'1YeDcr-VlMTXI8TZ99Vyu7fTV3vSvF3hI',w:9504,h:6336},
+{id:'1R_kBkDD0Y_IaK05arzL2nUR9BTnEen-Z',w:1152,h:1536},
+{id:'1p0xF_4V5zI04mWh1q2E5vkxVa1pnuQGV',w:8984,h:5989},
+{id:'17YHgnY4kI3dXmr42tLU8ypnmmYZ1Pi4V',w:1152,h:1536},
+{id:'1q6Gn5CcsYzAGTWBNtsl9xooQkXLvPtcB',w:1536,h:1152},
+{id:'1RDe1ys3uzCxhlBankIRB3nQoX6_RF_Er',w:1152,h:1536},
+{id:'1PlIa4K2gMGGoYEQaQsYAYKuxt127m5I8',w:1536,h:1152},
+{id:'1aUMy9fWLr7ZbCNRL1MvQ9I-Mc8Cdl8P7',w:1229,h:1536},
+{id:'14gNAKKW0h24umyyVcq_E853iGYTeKUIK',w:1536,h:1024},
+{id:'1psB3WA58ZrNa5CxK12PXKBj1hsfgeFnj',w:3449,h:5174},
+{id:'1TCTDFjsyZT7yCitt8mXalN428aE6e-a4',w:9504,h:6336},
+{id:'1V7OTLW5DMxgG4fD0t2AZdqFh-7PldHxM',w:1536,h:1152},
+{id:'1JHMuOLB6Hte10z1nEjEP3wPE-xiySIgr',w:1152,h:1536},
+{id:'1595mRrmX_fm1Ci0EXYycMKMbf0brBa7m',w:1024,h:1536},
+{id:'12GzHnhnvSFHDpjkiWvBGygkFBy0MP_9S',w:1536,h:1024},
+{id:'1FaN2TiU9ipi0RjT9LTyXn74XtLoaqIPY',w:4901,h:2757},
+{id:'1draZ_9IEXOTZdzm1duf2B7xU2pWdx8pd',w:1024,h:1536},
+{id:'1oMb2afMVuKRTbqJlxBYihIunU_uR_c4N',w:1024,h:1536},
+{id:'1BKceqojW0iOcPs6dxOH4gSfplYrFoXdD',w:1024,h:1536},
+{id:'1V2_PZJ0sxoZ9Lop_aYYCAFBKA19Z5Lwg',w:4144,h:6217},
+{id:'16A5q1A5_dABKu-zhzAMAb6ceSFPQ0pKO',w:1024,h:1536},
+{id:'1fy2wLqZraospZoqmyxBxHLn3VDUotgBi',w:1536,h:1024},
+{id:'1bGcUevCOsfp1PBT0UdCoSQWOD39JH-kd',w:1024,h:1536},
+{id:'12wGLoMaJUP4my1Pbzf82xTQY_RgAVwyu',w:1536,h:1024},
+{id:'1U8OYc7A_4P9UaOgm4n_ST_dZlqCh8gM2',w:8538,h:5692}
+];
+const photos=photoData.map(({id})=>`https://drive.google.com/thumbnail?id=${id}&sz=w1800`);
 const archive=document.getElementById('archive');
 const lightbox=document.getElementById('lightbox');
 const lightboxImage=document.getElementById('lightboxImage');
@@ -57,11 +85,16 @@ const lightboxCount=document.getElementById('lightboxCount');
 let currentIndex=0;
 let touchStartX=0;
 let touchStartY=0;
-photos.forEach((src,index)=>{
-  const item=document.createElement('div');item.className='photo';const img=document.createElement('img');img.src=src;img.alt='';img.decoding='async';
+photoData.forEach((photo,index)=>{
+  const item=document.createElement('div');item.className='photo';
+  const img=document.createElement('img');
+  img.width=photo.w;img.height=photo.h;img.alt='';img.decoding='async';
   if(index<6){img.loading='eager';img.fetchPriority=index<2?'high':'auto'}else{img.loading='lazy'}
   const reveal=()=>{if(!img.classList.contains('loaded'))img.classList.add('loaded')};
-  img.addEventListener('load',reveal,{once:true});if(img.complete)reveal();item.appendChild(img);item.addEventListener('click',()=>openLightbox(index));archive.appendChild(item);
+  img.addEventListener('load',reveal,{once:true});
+  img.src=photos[index];
+  if(img.complete)reveal();
+  item.appendChild(img);item.addEventListener('click',()=>openLightbox(index));archive.appendChild(item);
 });
 function renderLightbox(){lightboxImage.classList.remove('ready');lightboxImage.src=photos[currentIndex];lightboxCount.textContent=`${String(currentIndex+1).padStart(2,'0')} / ${String(photos.length).padStart(2,'0')}`}
 function openLightbox(index){currentIndex=index;renderLightbox();lightbox.classList.add('open');document.body.style.overflow='hidden'}
